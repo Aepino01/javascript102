@@ -23,3 +23,56 @@ const itemData = {
         score: 36
     }
 };
+
+// Esperar a que el DOM esté cargado
+document.addEventListener('DOMContentLoaded', function () {
+    const select = document.getElementById('items');
+    const img = document.getElementById('displayImage');
+    const photographer = document.getElementById('photographer');
+    const description = document.getElementById('description');
+    const score = document.getElementById('score');
+    const btnUp = document.getElementById('increaseScore');
+    const btnDown = document.getElementById('decreaseScore');
+
+    // Llenar el select con los nombres de los ítems
+    Object.entries(itemData).forEach(([key, item]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = item.name;
+        select.appendChild(option);
+    });
+
+    // Función para mostrar los datos del ítem seleccionado
+    function mostrarItem(key) {
+        const item = itemData[key];
+        if (!item) return;
+        img.src = item.image;
+        img.alt = item.name;
+        photographer.value = item.photographer;
+        description.value = item.description;
+        score.value = item.score;
+    }
+
+    // Mostrar el primer ítem por defecto
+    select.value = Object.keys(itemData)[0];
+    mostrarItem(select.value);
+
+    // Cambiar datos al seleccionar otro ítem
+    select.addEventListener('change', function () {
+        mostrarItem(this.value);
+    });
+
+    // Aumentar puntaje
+    btnUp.addEventListener('click', function () {
+        const key = select.value;
+        itemData[key].score++;
+        mostrarItem(key);
+    });
+
+    // Disminuir puntaje
+    btnDown.addEventListener('click', function () {
+        const key = select.value;
+        itemData[key].score--;
+        mostrarItem(key);
+    });
+});
